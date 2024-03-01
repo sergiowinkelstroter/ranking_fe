@@ -8,6 +8,7 @@ import { collection, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { Loading } from "./components/Loading";
 import swal from "sweetalert";
 import { ContentOptions } from "sweetalert/typings/modules/options/content";
+import { useEffect, useRef } from "react";
 
 export default function Home() {
   const equipesRef = collection(db, "equipes");
@@ -113,39 +114,54 @@ export default function Home() {
     });
   }
 
-  const selectElement = document.createElement("select");
-  selectElement.setAttribute("placeholder", "Cor da equipe");
+  const selectElementRef = useRef<HTMLSelectElement>({} as HTMLSelectElement);
 
-  const options = [
-    { value: "bg-black", text: "Preto" },
-    { value: "bg-gray-500", text: "Cinza" },
-    { value: "bg-red-500", text: "Vermelho" },
-    { value: "bg-yellow-500", text: "Amarelo" },
-    { value: "bg-green-500", text: "Verde" },
-    { value: "bg-blue-500", text: "Azul" },
-    { value: "bg-indigo-500", text: "Índigo" },
-    { value: "bg-purple-500", text: "Roxo" },
-    { value: "bg-pink-500", text: "Rosa" },
-    { value: "bg-white", text: "Branco" },
-  ];
+  useEffect(() => {
+    const selectElement = document.createElement("select");
+    selectElement.setAttribute("placeholder", "Cor da equipe");
 
-  options.forEach((option) => {
-    const optionElement = document.createElement("option");
-    optionElement.value = option.value;
-    optionElement.textContent = option.text;
-    selectElement.appendChild(optionElement);
-  });
+    // Adicione as opções ao select
+    const options = [
+      { value: "bg-black", text: "Preto" },
+      { value: "bg-gray-500", text: "Cinza" },
+      { value: "bg-red-500", text: "Vermelho" },
+      { value: "bg-yellow-500", text: "Amarelo" },
+      { value: "bg-green-500", text: "Verde" },
+      { value: "bg-blue-500", text: "Azul" },
+      { value: "bg-indigo-500", text: "Índigo" },
+      { value: "bg-purple-500", text: "Roxo" },
+      { value: "bg-pink-500", text: "Rosa" },
+      { value: "bg-white", text: "Branco" },
+    ];
 
-  const contentOptions: ContentOptions = {
-    element: selectElement,
-    attributes: { placeholder: "Cor da equipe" },
-  };
+    options.forEach((option) => {
+      const optionElement = document.createElement("option");
+      optionElement.value = option.value;
+      optionElement.textContent = option.text;
+      selectElement.appendChild(optionElement);
+    });
+
+    // Adicione o select ao DOM
+    document.body.appendChild(selectElement);
+
+    // Armazene o selectElement no ref
+    if (selectElementRef.current) {
+      selectElementRef.current = selectElement;
+    }
+
+    // Limpeza: remova o select do DOM quando o componente for desmontado
+    return () => {
+      if (selectElementRef.current) {
+        document.body.removeChild(selectElementRef.current);
+      }
+    };
+  }, []);
 
   function handleEditColorTeams(team: Team) {
     let selectedColor = "";
     swal({
       text: "Editar cor da equipe",
-      content: contentOptions,
+      content: { element: selectElementRef.current },
       buttons: ["Cancelar", "Editar"],
     }).then((color) => {
       if (!color) throw null;
@@ -162,7 +178,7 @@ export default function Home() {
           swal("Algo de errado aconteceu!", "error");
         });
     });
-    selectElement.addEventListener("change", (event) => {
+    selectElementRef.current?.addEventListener("change", (event) => {
       selectedColor = (event.target as HTMLSelectElement).value;
     });
   }

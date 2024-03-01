@@ -5,7 +5,7 @@ import { auth, db } from "../service/firebase";
 import { User, onAuthStateChanged, signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import swal from "sweetalert";
 import { doc, setDoc } from "firebase/firestore";
 import { v4 as uuid } from "uuid";
@@ -27,33 +27,48 @@ export const Header = () => {
       });
   }
 
-  const selectElement = document.createElement("select");
-  selectElement.setAttribute("placeholder", "Cor da equipe");
+  const selectElementRef = useRef<HTMLSelectElement>({} as HTMLSelectElement);
 
-  const options = [
-    { value: "bg-black", text: "Preto" },
-    { value: "bg-gray-500", text: "Cinza" },
-    { value: "bg-red-500", text: "Vermelho" },
-    { value: "bg-yellow-500", text: "Amarelo" },
-    { value: "bg-green-500", text: "Verde" },
-    { value: "bg-blue-500", text: "Azul" },
-    { value: "bg-indigo-500", text: "Índigo" },
-    { value: "bg-purple-500", text: "Roxo" },
-    { value: "bg-pink-500", text: "Rosa" },
-    { value: "bg-white", text: "Branco" },
-  ];
+  useEffect(() => {
+    const selectElement = document.createElement("select");
+    selectElement.setAttribute("placeholder", "Cor da equipe");
 
-  options.forEach((option) => {
-    const optionElement = document.createElement("option");
-    optionElement.value = option.value;
-    optionElement.textContent = option.text;
-    selectElement.appendChild(optionElement);
-  });
+    // Adicione as opções ao select
+    const options = [
+      { value: "bg-black", text: "Preto" },
+      { value: "bg-gray-500", text: "Cinza" },
+      { value: "bg-red-500", text: "Vermelho" },
+      { value: "bg-yellow-500", text: "Amarelo" },
+      { value: "bg-green-500", text: "Verde" },
+      { value: "bg-blue-500", text: "Azul" },
+      { value: "bg-indigo-500", text: "Índigo" },
+      { value: "bg-purple-500", text: "Roxo" },
+      { value: "bg-pink-500", text: "Rosa" },
+      { value: "bg-white", text: "Branco" },
+    ];
 
-  const contentOptions: ContentOptions = {
-    element: selectElement,
-    attributes: { placeholder: "Cor da equipe" },
-  };
+    options.forEach((option) => {
+      const optionElement = document.createElement("option");
+      optionElement.value = option.value;
+      optionElement.textContent = option.text;
+      selectElement.appendChild(optionElement);
+    });
+
+    // Adicione o select ao DOM
+    document.body.appendChild(selectElement);
+
+    // Armazene o selectElement no ref
+    if (selectElementRef.current) {
+      selectElementRef.current = selectElement;
+    }
+
+    // Limpeza: remova o select do DOM quando o componente for desmontado
+    return () => {
+      if (selectElementRef.current) {
+        document.body.removeChild(selectElementRef.current);
+      }
+    };
+  }, []);
 
   function handleModalAddTeam() {
     let selectedColor = "";
@@ -97,7 +112,7 @@ export const Header = () => {
 
           swal({
             text: "Cor da equipe",
-            content: contentOptions,
+            content: { element: selectElementRef.current }, // Use selectElementRef.current
             buttons: ["Cancelar", "Criar"],
           }).then((result) => {
             if (result && selectedColor !== "") {
@@ -105,7 +120,7 @@ export const Header = () => {
             }
           });
 
-          selectElement.addEventListener("change", (event) => {
+          selectElementRef.current?.addEventListener("change", (event) => {
             selectedColor = (event.target as HTMLSelectElement).value;
           });
         });
