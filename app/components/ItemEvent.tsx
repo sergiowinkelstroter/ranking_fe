@@ -37,20 +37,18 @@ export const ItemEvent = ({ event, onDelete }: ItemEventProps) => {
       href="#"
       className={`relative w-[350px] md:w-[400px] block overflow-hidden rounded-lg text-white bg-[#141a3b] p-4 `}
     >
-      <div className="flex flex-col sm:flex-row items-center sm:justify-between sm:gap-4">
+      <div className="flex flex-col sm:flex-row items-center sm:justify-around sm:gap-4">
         <div className="mb-4 sm:mb-0">
           <h2 className="text-lg font-bold sm:text-xl">{event.title}</h2>
         </div>
 
-        <div className="h-24 w-24 rounded-lg bg-gray-400 shadow-sm m-4">
-          <Image src="/logo_conquistadores.jpg" alt="" width={96} height={96} />
+        <div className="h-24 w-24 rounded-lg bg-white shadow-sm m-4">
+          <Image src="/logo_conquistadores.png" alt="" width={96} height={96} />
         </div>
       </div>
 
       <div className="mt-4">
-        <p className="max-w-[40ch] text-sm text-center md:text-start">
-          {event.description}
-        </p>
+        <p className="max-w-[40ch] text-sm text-center"> {event.description}</p>
       </div>
 
       <dl className="mt-6 flex  sm:flex-row justify-around ">

@@ -119,6 +119,7 @@ export default function Home() {
   useEffect(() => {
     const selectElement = document.createElement("select");
     selectElement.setAttribute("placeholder", "Cor da equipe");
+    selectElement.classList.add("hidden");
 
     // Adicione as opções ao select
     const options = [
@@ -159,6 +160,7 @@ export default function Home() {
 
   function handleEditColorTeams(team: Team) {
     let selectedColor = "";
+    selectElementRef.current?.classList.remove("hidden");
     swal({
       text: "Editar cor da equipe",
       content: { element: selectElementRef.current },

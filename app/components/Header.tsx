@@ -32,6 +32,7 @@ export const Header = () => {
   useEffect(() => {
     const selectElement = document.createElement("select");
     selectElement.setAttribute("placeholder", "Cor da equipe");
+    selectElement.classList.add("hidden");
 
     // Adicione as opções ao select
     const options = [
@@ -72,6 +73,7 @@ export const Header = () => {
 
   function handleModalAddTeam() {
     let selectedColor = "";
+    selectElementRef.current?.classList.remove("hidden");
 
     swal({
       text: "Nome da equipe",
