@@ -232,7 +232,9 @@ export const Header = () => {
   if (!user) {
     return (
       <header className="relative flex gap-4 justify-center md:justify-between items-center bg-white/95 px-6 p-2 ">
-        <Image src="/logo_conquistadores.png" width={50} height={50} alt="" />
+        <Link href={"/"}>
+          <Image src="/logo_conquistadores.png" width={50} height={50} alt="" />
+        </Link>
         <h1 className="text-lg md:text-2xl text-[#1c2453] font-bold uppercase m-2 ">
           {" "}
           Jovens Conquistadores
