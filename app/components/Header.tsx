@@ -11,6 +11,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { v4 as uuid } from "uuid";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Dropdown, DropdownItem } from "./DropDown";
+import { ContentOptions } from "sweetalert/typings/modules/options/content";
 
 export const Header = () => {
   const router = useRouter();
@@ -26,7 +27,37 @@ export const Header = () => {
       });
   }
 
+  const selectElement = document.createElement("select");
+  selectElement.setAttribute("placeholder", "Cor da equipe");
+
+  const options = [
+    { value: "bg-black", text: "Preto" },
+    { value: "bg-gray-500", text: "Cinza" },
+    { value: "bg-red-500", text: "Vermelho" },
+    { value: "bg-yellow-500", text: "Amarelo" },
+    { value: "bg-green-500", text: "Verde" },
+    { value: "bg-blue-500", text: "Azul" },
+    { value: "bg-indigo-500", text: "Índigo" },
+    { value: "bg-purple-500", text: "Roxo" },
+    { value: "bg-pink-500", text: "Rosa" },
+    { value: "bg-white", text: "Branco" },
+  ];
+
+  options.forEach((option) => {
+    const optionElement = document.createElement("option");
+    optionElement.value = option.value;
+    optionElement.textContent = option.text;
+    selectElement.appendChild(optionElement);
+  });
+
+  const contentOptions: ContentOptions = {
+    element: selectElement,
+    attributes: { placeholder: "Cor da equipe" },
+  };
+
   function handleModalAddTeam() {
+    let selectedColor = "";
+
     swal({
       text: "Nome da equipe",
       content: {
@@ -60,20 +91,39 @@ export const Header = () => {
               type: "text",
             },
           },
-          buttons: ["Cancelar", "Criar"],
+          buttons: ["Cancelar", "Próximo"],
         }).then((points) => {
           if (!points) throw null;
-          addTeam(title, names, points);
+
+          swal({
+            text: "Cor da equipe",
+            content: contentOptions,
+            buttons: ["Cancelar", "Criar"],
+          }).then((result) => {
+            if (result && selectedColor !== "") {
+              addTeam(title, names, points, selectedColor);
+            }
+          });
+
+          selectElement.addEventListener("change", (event) => {
+            selectedColor = (event.target as HTMLSelectElement).value;
+          });
         });
       });
     });
   }
 
-  async function addTeam(title: string, names: string, points: string) {
+  async function addTeam(
+    title: string,
+    names: string,
+    points: string,
+    color: string
+  ) {
     await setDoc(doc(db, "equipes", uuid()), {
       title: title,
       Participantes: names,
       Pontos: points,
+      color: color,
     })
       .then(() => {
         swal("Bom trabalho!", "Equipe criada com sucesso!", "success");
@@ -167,7 +217,7 @@ export const Header = () => {
         <Image src="/logo_conquistadores.png" width={50} height={50} alt="" />
         <h1 className="text-lg md:text-2xl text-[#1c2453] font-bold uppercase m-2 ">
           {" "}
-          Conquistadores
+          Jovens Conquistadores
         </h1>
         <div></div>
       </header>
@@ -179,7 +229,7 @@ export const Header = () => {
           <Image src="/logo_conquistadores.png" width={50} height={50} alt="" />
           <h1 className="text-lg md:text-2xl text-[#1c2453] font-bold uppercase m-2 ">
             {" "}
-            Conquistadores
+            Jovens Conquistadores
           </h1>
         </div>
 

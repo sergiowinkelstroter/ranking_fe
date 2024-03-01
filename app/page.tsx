@@ -1,13 +1,13 @@
 "use client";
 
-import { ItemTeam } from "./components/ItemTeam";
-import { ItemTopThree, Team } from "./components/ItemTopThree";
+import { ItemTeam, Team } from "./components/ItemTeam";
 import { Navigation } from "./components/Navigation";
 import { db } from "./service/firebase";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { collection, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { Loading } from "./components/Loading";
 import swal from "sweetalert";
+import { ContentOptions } from "sweetalert/typings/modules/options/content";
 
 export default function Home() {
   const equipesRef = collection(db, "equipes");
@@ -19,6 +19,7 @@ export default function Home() {
     id: team.id,
     participantes: team.data().Participantes,
     pontos: team.data().Pontos,
+    color: team.data().color,
   }));
 
   teamsComPosicao && teamsComPosicao.sort((a, b) => b.pontos - a.pontos);
@@ -112,6 +113,60 @@ export default function Home() {
     });
   }
 
+  const selectElement = document.createElement("select");
+  selectElement.setAttribute("placeholder", "Cor da equipe");
+
+  const options = [
+    { value: "bg-black", text: "Preto" },
+    { value: "bg-gray-500", text: "Cinza" },
+    { value: "bg-red-500", text: "Vermelho" },
+    { value: "bg-yellow-500", text: "Amarelo" },
+    { value: "bg-green-500", text: "Verde" },
+    { value: "bg-blue-500", text: "Azul" },
+    { value: "bg-indigo-500", text: "Índigo" },
+    { value: "bg-purple-500", text: "Roxo" },
+    { value: "bg-pink-500", text: "Rosa" },
+    { value: "bg-white", text: "Branco" },
+  ];
+
+  options.forEach((option) => {
+    const optionElement = document.createElement("option");
+    optionElement.value = option.value;
+    optionElement.textContent = option.text;
+    selectElement.appendChild(optionElement);
+  });
+
+  const contentOptions: ContentOptions = {
+    element: selectElement,
+    attributes: { placeholder: "Cor da equipe" },
+  };
+
+  function handleEditColorTeams(team: Team) {
+    let selectedColor = "";
+    swal({
+      text: "Editar cor da equipe",
+      content: contentOptions,
+      buttons: ["Cancelar", "Editar"],
+    }).then((color) => {
+      if (!color) throw null;
+
+      const teamRef = doc(db, "equipes", team.id);
+      updateDoc(teamRef, {
+        color: selectedColor,
+      })
+        .then(() => {
+          swal("Bom trabalho!", "Cor adicionados com sucesso!", "success");
+        })
+        .catch((err) => {
+          console.log(err);
+          swal("Algo de errado aconteceu!", "error");
+        });
+    });
+    selectElement.addEventListener("change", (event) => {
+      selectedColor = (event.target as HTMLSelectElement).value;
+    });
+  }
+
   return (
     <>
       <Navigation />
@@ -127,17 +182,21 @@ export default function Home() {
               teamsComPosicao.map((team, index) => {
                 if (index < 3) {
                   return (
-                    <ItemTopThree
+                    <ItemTeam
                       key={team.id}
                       team={team}
                       onDelete={deleteTeam}
                       onEdit={editTeam}
                       onAddPoints={addPointsAndTeams}
+                      onEditColor={handleEditColorTeams}
+                      topThree
                     />
                   );
                 } else {
                   return (
                     <ItemTeam
+                      topThree={false}
+                      onEditColor={handleEditColorTeams}
                       key={team.id}
                       team={team}
                       onDelete={deleteTeam}

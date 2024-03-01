@@ -1,37 +1,54 @@
+"use client";
+
 import { useAuthState } from "react-firebase-hooks/auth";
 import swal from "sweetalert";
 import { auth } from "../service/firebase";
-import { Team } from "./ItemTopThree";
 import { Pencil, Plus, Trash } from "lucide-react";
+import { useState } from "react";
 import { Dropdown, DropdownItem } from "./DropDown";
 import Image from "next/image";
+
+export interface Team {
+  posicao: number;
+  title: any;
+  id: string;
+  participantes: any;
+  pontos: any;
+  color: any;
+}
 
 interface ItemTeamProps {
   team: Team;
   onDelete: (id: string) => void;
   onEdit: (team: Team) => void;
   onAddPoints: (team: Team) => void;
+  onEditColor: (team: Team) => void;
+  topThree: boolean;
 }
+
+type FileInfo = {
+  name: string;
+  previewSrc: string | ArrayBuffer | null;
+};
 
 export const ItemTeam = ({
   team,
   onDelete,
-  onAddPoints,
   onEdit,
+  onAddPoints,
+  onEditColor,
+  topThree,
 }: ItemTeamProps) => {
   const [user, loading, error] = useAuthState(auth);
+  const [fileInfos, setFileInfos] = useState<FileInfo[]>([]);
   function handleDelete() {
-    if (user) {
-      swal({
-        title: "Tem certeza que deseja excluir?",
-      }).then((result) => {
-        if (result) {
-          onDelete(team.id);
-        }
-      });
-    } else {
-      return null;
-    }
+    swal({
+      title: "Tem certeza que deseja excluir?",
+    }).then((result) => {
+      if (result) {
+        onDelete(team.id);
+      }
+    });
   }
 
   function handleEdit() {
@@ -42,29 +59,42 @@ export const ItemTeam = ({
     onAddPoints(team);
   }
 
-  function handleAddProfileImage() {
-    swal({
-      title: "Adicionar imagem de perfil?",
-    });
+  function handleEditColor() {
+    onEditColor(team);
   }
 
+  // const ACCEPTED_EXTS = ["png", "jpeg", "jpg"];
+
+  // function handleAddProfileImage() {}
+
   return (
-    <div className="w-full opacity-65  text-white rounded-md mt-2 flex justify-between p-4  items-center ">
+    <div
+      className={`w-[350px] md:w-full ${
+        topThree ? "bg-[#141a3b]" : "opacity-65"
+      } text-white rounded-md mt-2 flex justify-between p-2 items-center `}
+    >
       <div className="flex gap-4 ">
-        <span className="text-lg"> {team.posicao}</span>
-        <div className="flex justify-center items-center rounded-full bg-gray-400 w-[35px] h-[35px] hover:opacity-50">
+        <span className="text-2xl">
+          {topThree && <span className="text-lg">#</span>}
+          {team.posicao}
+        </span>
+        <div
+          className={`flex justify-center items-center rounded-full ${
+            team.color ? `${team.color}` : "bg-gray-700"
+          } w-[35px] h-[35px] hover:opacity-60`}
+        >
           {/* {team.profileImage} */}
           {user && (
             <button
-              onClick={handleAddProfileImage}
-              className="hidden hover:flex"
+              onClick={handleEditColor}
+              className="opacity-0 hover:opacity-100"
             >
-              <Pencil />
+              <Pencil size={14} />
             </button>
           )}
         </div>
         <div className="flex flex-col">
-          <h1 className="text-xl text-white">{team.title}</h1>
+          <h2 className="text-lg md:text-xl text-white">{team.title}</h2>
 
           <div className="flex gap-2 text-xs text-gray-300">
             {team.participantes}
