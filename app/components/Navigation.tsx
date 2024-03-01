@@ -6,14 +6,14 @@ export const Navigation = () => {
   const pathname = usePathname();
 
   return (
-    <div className="absolute left-4 top-20 flex j">
+    <div className="absolute left-4 top-20 flex ">
       <span className="inline-flex -space-x-px overflow-hidden rounded-md border  bg-[#141a3b] shadow-sm">
         <Link
           href="/"
           className={`inline-block px-4 py-2  text-sm font-medium ${
             pathname === "/"
-              ? "bg-[#141a3b] text-white"
-              : "bg-white text-[#141a3b]"
+              ? "bg-white text-[#141a3b]"
+              : "bg-[#141a3b] text-white"
           }  hover:opacity-85 focus:relative`}
         >
           Classificação
@@ -23,8 +23,8 @@ export const Navigation = () => {
           href="/eventos"
           className={`inline-block px-4 py-2  text-sm font-medium ${
             pathname === "/eventos"
-              ? "bg-[#141a3b] text-white"
-              : "bg-white text-[#141a3b]"
+              ? "bg-white text-[#141a3b]"
+              : "bg-[#141a3b] text-white"
           }  hover:opacity-85 focus:relative`}
         >
           Eventos

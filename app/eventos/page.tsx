@@ -1,6 +1,12 @@
-import { eventos } from "@/conteudo/eventos";
+"use client";
+
 import { Navigation } from "../components/Navigation";
 import { ItemEvent } from "../components/ItemEvent";
+import { useCollection } from "react-firebase-hooks/firestore";
+import { collection, deleteDoc, doc } from "firebase/firestore";
+import { db } from "../service/firebase";
+import { Loading } from "../components/Loading";
+import swal from "sweetalert";
 
 export interface Event {
   id: string;
@@ -13,40 +19,47 @@ export interface Event {
 }
 
 export default function Eventos() {
-  const eventosOrdenados = eventos.sort((a, b) => {
-    return (
-      new Date(a.dateOfEvent).getTime() - new Date(b.dateOfEvent).getTime()
-    );
-  });
+  const eventosRef = collection(db, "eventos");
+  const [eventos, loading, error] = useCollection(eventosRef);
 
-  let dataAtual = new Date();
+  const _eventos = eventos?.docs.map((event) => ({
+    id: event.id,
+    title: event.data().title,
+    description: event.data().description,
+    pointsForParticipanting: event.data().pointsForParticipanting,
+    dateOfEvent: event.data().dateOfEvent,
+  }));
 
-  const eventosComDatasFuturas = eventosOrdenados.filter((evento) => {
-    return new Date(evento.dateOfEvent) >= dataAtual;
-  });
-
-  let eventosComDatasPassadas = eventos.filter((objeto) => {
-    return new Date(objeto.dateOfEvent).getTime() < dataAtual.getTime();
-  });
+  async function deleteEvent(id: string) {
+    await deleteDoc(doc(db, "eventos", id))
+      .then(() => {
+        swal("Bom trabalho!", "Evento excluído com sucesso!", "success");
+      })
+      .catch((error) => {
+        console.log(error);
+        swal("Algo de errado aconteceu!", "error");
+      });
+  }
 
   return (
     <>
       <Navigation />
       <main className="flex min-h-screen  flex-col items-center justify-between p-24 ">
         <div className="flex flex-col gap-4">
-          <h2 className="text-xl">Próximos eventos:</h2>
           <ul className="grid grid-cols-3 gap-4">
-            {eventosComDatasFuturas.map((event) => (
-              <ItemEvent key={event.id} event={event} oldEvent={false} />
-            ))}
-          </ul>
-        </div>
-        <div className="mt-8 w-full flex flex-col gap-4">
-          <h2 className="text-xl">Eventos passados:</h2>
-          <ul className="grid grid-cols-3 gap-4">
-            {eventosComDatasPassadas.map((event) => (
-              <ItemEvent key={event.id} event={event} oldEvent />
-            ))}
+            {loading && (
+              <div className="flex justify-center items-center">
+                <Loading />
+              </div>
+            )}
+            {_eventos &&
+              _eventos.map((event) => (
+                <ItemEvent
+                  key={event.id}
+                  event={event}
+                  onDelete={deleteEvent}
+                />
+              ))}
           </ul>
         </div>
       </main>

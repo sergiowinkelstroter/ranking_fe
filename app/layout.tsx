@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import Image from "next/image";
-import Link from "next/link";
 import { Footer } from "./components/footer";
+import { Header } from "./components/Header";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const poppins = Poppins({ weight: "400", subsets: ["latin"] });
 
@@ -23,11 +24,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={poppins.className}>
-        <header className="relative flex items-center bg-white justify-center p-2 ">
-          <Image src="/logo_conquistadores.jpg" width={50} height={50} alt="" />
-        </header>
+        <Header />
         {children}
         <Footer />
+        <ToastContainer position="bottom-right" />
       </body>
     </html>
   );

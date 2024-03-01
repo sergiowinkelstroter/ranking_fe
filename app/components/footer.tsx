@@ -9,7 +9,7 @@ export const Footer = () => {
         rel="noopener noreferrer"
         className="text-gray-300 text-xs hover:opacity-80 hover:underline"
       >
-        Feito com ❤️ por {""}
+        Feito por {""}
         Sergio Winkelstroter
       </a>
     </footer>
