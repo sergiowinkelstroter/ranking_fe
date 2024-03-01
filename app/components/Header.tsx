@@ -12,6 +12,7 @@ import { v4 as uuid } from "uuid";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Dropdown, DropdownItem } from "./DropDown";
 import { ContentOptions } from "sweetalert/typings/modules/options/content";
+import Link from "next/link";
 
 export const Header = () => {
   const router = useRouter();
@@ -243,7 +244,14 @@ export const Header = () => {
     return (
       <header className="relative flex justify-between items-center bg-white/95 px-6 p-2 ">
         <div className="flex gap-4">
-          <Image src="/logo_conquistadores.png" width={50} height={50} alt="" />
+          <Link href={"/"}>
+            <Image
+              src="/logo_conquistadores.png"
+              width={50}
+              height={50}
+              alt=""
+            />
+          </Link>
           <h1 className="text-lg md:text-2xl text-[#1c2453] font-bold uppercase m-2 ">
             {" "}
             Jovens Conquistadores
