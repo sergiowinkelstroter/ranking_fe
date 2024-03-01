@@ -6,7 +6,7 @@ export const Navigation = () => {
   const pathname = usePathname();
 
   return (
-    <div className="absolute left-4 top-20 flex ">
+    <div className="absolute left-4 top-24 md:top-20 flex ">
       <span className="inline-flex -space-x-px overflow-hidden rounded-md border  bg-[#141a3b] shadow-sm">
         <Link
           href="/"

@@ -5,6 +5,8 @@ import swal from "sweetalert";
 import { auth } from "../service/firebase";
 import { Pencil, Plus, Trash } from "lucide-react";
 import { useState } from "react";
+import { Dropdown, DropdownItem } from "./DropDown";
+import Image from "next/image";
 
 export interface Team {
   posicao: number;
@@ -57,7 +59,7 @@ export const ItemTopThree = ({
   function handleAddProfileImage() {}
 
   return (
-    <div className="w-full bg-[#141a3b] text-white rounded-md mt-2 flex justify-between p-4 items-center ">
+    <div className="w-[350px] md:w-full bg-[#141a3b] text-white rounded-md mt-2 flex justify-between p-2 items-center ">
       <div className="flex gap-4 ">
         <span className="text-2xl">
           <span className="text-lg">#</span>
@@ -75,7 +77,7 @@ export const ItemTopThree = ({
           )}
         </div>
         <div className="flex flex-col">
-          <h2 className="text-xl text-white">{team.title}</h2>
+          <h2 className="text-lg md:text-xl text-white">{team.title}</h2>
 
           <div className="flex gap-2 text-xs text-gray-300">
             {team.participantes}
@@ -87,17 +89,31 @@ export const ItemTopThree = ({
           Pontos: <span className="text-lg text-white">{team.pontos}</span>
         </span>
         {user && (
-          <>
-            <button onClick={handleDelete} className="text-lg text-white">
-              <Trash />
-            </button>
-            <button onClick={handleEdit} className="text-lg text-white">
-              <Pencil />
-            </button>
-            <button onClick={handleAddPoints} className="text-lg text-white">
-              <Plus />
-            </button>
-          </>
+          <Dropdown
+            position="bottom-right"
+            header
+            items={[
+              <DropdownItem key={1} onClick={handleDelete}>
+                <Trash />
+              </DropdownItem>,
+              <DropdownItem key={2} onClick={handleEdit}>
+                <Pencil />
+              </DropdownItem>,
+              <DropdownItem key={3} onClick={handleAddPoints}>
+                <Plus />
+              </DropdownItem>,
+            ]}
+          >
+            <div className="flex justify-center items-center p-2">
+              <Image
+                src="/assets/svg/three-dots-white.svg"
+                alt=""
+                className="float-right text-white"
+                width={14}
+                height={14}
+              />
+            </div>
+          </Dropdown>
         )}
       </div>
     </div>

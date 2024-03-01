@@ -35,10 +35,10 @@ export const ItemEvent = ({ event, onDelete }: ItemEventProps) => {
     <a
       onClick={handleDelete}
       href="#"
-      className={`relative block overflow-hidden rounded-lg text-white bg-[#141a3b] p-4 `}
+      className={`relative w-[350px] md:w-[400px] block overflow-hidden rounded-lg text-white bg-[#141a3b] p-4 `}
     >
-      <div className="flex items-center  sm:flex sm:justify-around sm:gap-4">
-        <div>
+      <div className="flex flex-col sm:flex-row items-center sm:justify-between sm:gap-4">
+        <div className="mb-4 sm:mb-0">
           <h2 className="text-lg font-bold sm:text-xl">{event.title}</h2>
         </div>
 
@@ -48,13 +48,15 @@ export const ItemEvent = ({ event, onDelete }: ItemEventProps) => {
       </div>
 
       <div className="mt-4">
-        <p className="max-w-[40ch] text-sm ">{event.description}</p>
+        <p className="max-w-[40ch] text-sm text-center md:text-start">
+          {event.description}
+        </p>
       </div>
 
-      <dl className="mt-6 flex justify-around ">
-        <div className="flex flex-col-reverse items-center">
+      <dl className="mt-6 flex  sm:flex-row justify-around ">
+        <div className="flex flex-col-reverse items-center sm:mb-0">
           <dt className="text-base font-medium ">Pontos</dt>
-          <dd className="text-sm  ">{event.pointsForParticipanting}</dd>
+          <dd className="text-sm ">{event.pointsForParticipanting}</dd>
         </div>
         <div className="flex flex-col-reverse items-center">
           <dt className="text-base font-medium ">Data</dt>

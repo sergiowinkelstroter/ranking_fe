@@ -115,8 +115,8 @@ export default function Home() {
   return (
     <>
       <Navigation />
-      <main className="flex min-h-screen  flex-col items-center justify-between p-24 ">
-        <div className="w-2/3">
+      <main className="flex min-h-screen  flex-col items-center justify-between pt-24  md:p-24 ">
+        <div className="md:w-2/3">
           <ul>
             {loading && (
               <div className="flex justify-center items-center">

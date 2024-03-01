@@ -10,6 +10,7 @@ import swal from "sweetalert";
 import { doc, setDoc } from "firebase/firestore";
 import { v4 as uuid } from "uuid";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { Dropdown, DropdownItem } from "./DropDown";
 
 export const Header = () => {
   const router = useRouter();
@@ -145,7 +146,6 @@ export const Header = () => {
     points: string,
     date: string
   ) {
-    console.log(title, desc, points, date);
     await setDoc(doc(db, "eventos", uuid()), {
       title: title,
       description: desc,
@@ -163,11 +163,11 @@ export const Header = () => {
 
   if (!user) {
     return (
-      <header className="relative flex justify-between items-center bg-white/95 px-6 p-2 ">
-        <Image src="/logo_conquistadores.jpg" width={50} height={50} alt="" />
-        <h1 className="text-2xl text-[#1c2453] font-bold uppercase m-2 ">
+      <header className="relative flex gap-4 justify-center md:justify-between items-center bg-white/95 px-6 p-2 ">
+        <Image src="/logo_conquistadores.png" width={50} height={50} alt="" />
+        <h1 className="text-lg md:text-2xl text-[#1c2453] font-bold uppercase m-2 ">
           {" "}
-          Ministério jovem Conquistadores
+          Conquistadores
         </h1>
         <div></div>
       </header>
@@ -176,34 +176,63 @@ export const Header = () => {
     return (
       <header className="relative flex justify-between items-center bg-white/95 px-6 p-2 ">
         <div className="flex gap-4">
-          <Image src="/logo_conquistadores.jpg" width={50} height={50} alt="" />
-          <h1 className="text-2xl text-[#1c2453] font-bold uppercase m-2 ">
+          <Image src="/logo_conquistadores.png" width={50} height={50} alt="" />
+          <h1 className="text-lg md:text-2xl text-[#1c2453] font-bold uppercase m-2 ">
             {" "}
-            Ministério jovem Conquistadores
+            Conquistadores
           </h1>
         </div>
 
         {user && (
-          <div className="flex gap-2 text-sm">
-            <button
-              onClick={handleModalAddTeam}
-              className="bg-[#1c2453]  p-2 rounded-md text-white hover:opacity-90 "
-            >
-              Criar Equipe
-            </button>
-            <button
-              onClick={handleModalAddEvent}
-              className="bg-[#1c2453]  p-2 rounded-md text-white hover:opacity-90 "
-            >
-              Criar Evento
-            </button>
-            <button
-              onClick={SignOut}
-              className="bg-[#1c2453] w-[100px] p-2 rounded-md text-white hover:opacity-90"
-            >
-              Sair
-            </button>
-          </div>
+          <>
+            <div className="md:hidden">
+              <Dropdown
+                position="bottom-right"
+                header
+                items={[
+                  <DropdownItem key={1} onClick={handleModalAddTeam}>
+                    Criar Equipe
+                  </DropdownItem>,
+                  <DropdownItem key={2} onClick={handleModalAddEvent}>
+                    Criar Evento
+                  </DropdownItem>,
+                  <DropdownItem key={3} onClick={SignOut}>
+                    Sair
+                  </DropdownItem>,
+                ]}
+              >
+                <div className="flex justify-center items-center p-2">
+                  <Image
+                    src="/assets/svg/three-dots-black.svg"
+                    alt=""
+                    className="float-right text-white"
+                    width={14}
+                    height={14}
+                  />
+                </div>
+              </Dropdown>
+            </div>
+            <div className="hidden md:flex gap-2 text-sm">
+              <button
+                onClick={handleModalAddTeam}
+                className="bg-[#1c2453]  p-2 rounded-md text-white hover:opacity-90 "
+              >
+                Criar Equipe
+              </button>
+              <button
+                onClick={handleModalAddEvent}
+                className="bg-[#1c2453]  p-2 rounded-md text-white hover:opacity-90 "
+              >
+                Criar Evento
+              </button>
+              <button
+                onClick={SignOut}
+                className="bg-[#1c2453] w-[100px] p-2 rounded-md text-white hover:opacity-90"
+              >
+                Sair
+              </button>
+            </div>
+          </>
         )}
       </header>
     );

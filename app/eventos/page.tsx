@@ -44,9 +44,9 @@ export default function Eventos() {
   return (
     <>
       <Navigation />
-      <main className="flex min-h-screen  flex-col items-center justify-between p-24 ">
+      <main className="flex min-h-screen  flex-col items-center justify-between pt-24 md:p-24 ">
         <div className="flex flex-col gap-4">
-          <ul className="grid grid-cols-3 gap-4">
+          <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {loading && (
               <div className="flex justify-center items-center">
                 <Loading />

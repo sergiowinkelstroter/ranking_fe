@@ -3,6 +3,8 @@ import swal from "sweetalert";
 import { auth } from "../service/firebase";
 import { Team } from "./ItemTopThree";
 import { Pencil, Plus, Trash } from "lucide-react";
+import { Dropdown, DropdownItem } from "./DropDown";
+import Image from "next/image";
 
 interface ItemTeamProps {
   team: Team;
@@ -74,17 +76,31 @@ export const ItemTeam = ({
           Pontos: <span className="text-lg text-white">{team.pontos}</span>
         </span>
         {user && (
-          <>
-            <button onClick={handleDelete} className="text-lg text-white">
-              <Trash />
-            </button>
-            <button onClick={handleEdit} className="text-lg text-white">
-              <Pencil />
-            </button>
-            <button onClick={handleAddPoints} className="text-lg text-white">
-              <Plus />
-            </button>
-          </>
+          <Dropdown
+            position="bottom-right"
+            header
+            items={[
+              <DropdownItem key={1} onClick={handleDelete}>
+                <Trash />
+              </DropdownItem>,
+              <DropdownItem key={2} onClick={handleEdit}>
+                <Pencil />
+              </DropdownItem>,
+              <DropdownItem key={3} onClick={handleAddPoints}>
+                <Plus />
+              </DropdownItem>,
+            ]}
+          >
+            <div className="flex justify-center items-center p-2">
+              <Image
+                src="/assets/svg/three-dots-white.svg"
+                alt=""
+                className="float-right text-white"
+                width={14}
+                height={14}
+              />
+            </div>
+          </Dropdown>
         )}
       </div>
     </div>
