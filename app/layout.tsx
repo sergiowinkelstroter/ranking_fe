@@ -5,6 +5,7 @@ import { Footer } from "./components/footer";
 import { Header } from "./components/Header";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Analytics } from "@vercel/analytics/react";
 
 const poppins = Poppins({ weight: "400", subsets: ["latin"] });
 
@@ -28,6 +29,7 @@ export default function RootLayout({
         {children}
         <Footer />
         <ToastContainer position="bottom-right" />
+        <Analytics />
       </body>
     </html>
   );
