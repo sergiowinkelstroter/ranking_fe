@@ -34,6 +34,7 @@ export const Header = () => {
     const selectElement = document.createElement("select");
     selectElement.setAttribute("placeholder", "Cor da equipe");
     selectElement.classList.add("hidden");
+    selectElement.value = "bg-black";
 
     // Adicione as opções ao select
     const options = [
@@ -47,6 +48,16 @@ export const Header = () => {
       { value: "bg-purple-500", text: "Roxo" },
       { value: "bg-pink-500", text: "Rosa" },
       { value: "bg-white", text: "Branco" },
+      { value: "bg-gray-100", text: "Cinza Claro" },
+      { value: "bg-red-100", text: "Vermelho Claro" },
+      { value: "bg-yellow-100", text: "Amarelo Claro" },
+      { value: "bg-green-100", text: "Verde Claro" },
+      { value: "bg-blue-100", text: "Azul Claro" },
+      { value: "bg-indigo-100", text: "Índigo Claro" },
+      { value: "bg-purple-100", text: "Roxo Claro" },
+      { value: "bg-pink-100", text: "Rosa Claro" },
+      { value: "bg-gray-200", text: "Cinza Claro 2" },
+      { value: "bg-red-200", text: "Vermelho Claro 2" },
     ];
 
     options.forEach((option) => {
@@ -137,6 +148,7 @@ export const Header = () => {
     points: string,
     color: string
   ) {
+    console.log(title, names, points, color);
     await setDoc(doc(db, "equipes", uuid()), {
       title: title,
       Participantes: names,
@@ -148,7 +160,7 @@ export const Header = () => {
       })
       .catch((error) => {
         console.log(error);
-        swal("Algo de errado aconteceu!", "error");
+        swal("Algo de errado aconteceu!", "", "error");
       });
   }
 
