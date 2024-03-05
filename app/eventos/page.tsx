@@ -27,7 +27,7 @@ export default function Eventos() {
     description: event.data().description,
     pointsForParticipanting: event.data().pointsForParticipanting,
     dateOfEvent: event.data().dateOfEvent,
-    imageUrl: event.data().image.url,
+    imageUrl: event.data().image.url ? event.data().image.url : null,
   }));
 
   async function deleteEvent(id: string) {
