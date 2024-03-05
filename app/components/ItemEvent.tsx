@@ -75,7 +75,7 @@ export const ItemEvent = ({ event, onDelete }: ItemEventProps) => {
         <div className=" rounded-lg bg-white shadow-sm m-4">
           <Image
             src={
-              event.imageUrl ? `${event.imageUrl}` : "/logo-conquistadores.png"
+              event.imageUrl ? `${event.imageUrl}` : "/logo_conquistadores.png"
             }
             alt=""
             width={96}

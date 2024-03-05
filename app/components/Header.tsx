@@ -234,6 +234,7 @@ export const Header = () => {
       description: desc,
       pointsForParticipanting: points,
       dateOfEvent: date,
+      image: { name: "", url: "" },
     })
       .then(() => {
         swal("Bom trabalho!", "Evento criado com sucesso!", "success");
