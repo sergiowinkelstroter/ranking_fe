@@ -77,7 +77,10 @@ export const Header = () => {
 
     // Limpeza: remova o select do DOM quando o componente for desmontado
     return () => {
-      if (selectElementRef.current) {
+      if (
+        selectElementRef.current &&
+        selectElementRef.current.parentNode === document.body
+      ) {
         document.body.removeChild(selectElementRef.current);
       }
     };

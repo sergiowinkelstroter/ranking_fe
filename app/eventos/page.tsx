@@ -3,19 +3,18 @@
 import { Navigation } from "../components/Navigation";
 import { ItemEvent } from "../components/ItemEvent";
 import { useCollection } from "react-firebase-hooks/firestore";
-import { collection, deleteDoc, doc } from "firebase/firestore";
+import { collection, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../service/firebase";
 import { Loading } from "../components/Loading";
 import swal from "sweetalert";
 
 export interface Event {
   id: string;
-  title: string;
-  description: string;
-  pointsForParticipating: number;
-  dateOfEvent: string;
-  hourOfEvent: string;
-  createdAt: string;
+  title: any;
+  description: any;
+  pointsForParticipanting: any;
+  dateOfEvent: any;
+  imageUrl: any;
 }
 
 export default function Eventos() {
@@ -28,6 +27,7 @@ export default function Eventos() {
     description: event.data().description,
     pointsForParticipanting: event.data().pointsForParticipanting,
     dateOfEvent: event.data().dateOfEvent,
+    imageUrl: event.data().image.url,
   }));
 
   async function deleteEvent(id: string) {

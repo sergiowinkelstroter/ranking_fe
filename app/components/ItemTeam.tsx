@@ -63,10 +63,6 @@ export const ItemTeam = ({
     onEditColor(team);
   }
 
-  // const ACCEPTED_EXTS = ["png", "jpeg", "jpg"];
-
-  // function handleAddProfileImage() {}
-
   return (
     <div
       className={`w-[350px] md:w-full ${
